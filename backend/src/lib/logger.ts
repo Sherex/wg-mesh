@@ -1,6 +1,7 @@
 import { args } from './config'
 
 export type LogLevel = 'silly' | 'debug' | 'info' | 'verbose' | 'warn' | 'error'
+export type LogMessage = string | number
 
 let minimumLogLevel: LogLevel = 'silly'
 
@@ -14,7 +15,7 @@ if (isLogLevel(logLevelEnv)) {
   minimumLogLevel = logLevelEnv.toLocaleLowerCase() as LogLevel
 }
 
-function log (level: LogLevel, message: string | string[]): void {
+function log (level: LogLevel, message: LogMessage | LogMessage[]): void {
   if (getLevel(level) > getLevel(minimumLogLevel)) return
   message = Array.isArray(message) ? message : [message]
   console.log(
