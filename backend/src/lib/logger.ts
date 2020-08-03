@@ -1,4 +1,6 @@
-type LogLevel = 'silly' | 'debug' | 'info' | 'verbose' | 'warn' | 'error'
+import { args } from './config'
+
+export type LogLevel = 'silly' | 'debug' | 'info' | 'verbose' | 'warn' | 'error'
 
 let minimumLogLevel: LogLevel = 'silly'
 
@@ -7,7 +9,7 @@ function isLogLevel (level: string | undefined): level is LogLevel {
   return typeof getLevel(level as LogLevel) !== 'undefined'
 }
 
-const logLevelEnv = process.env.LOG_LEVEL
+const logLevelEnv = args['log-level']
 if (isLogLevel(logLevelEnv)) {
   minimumLogLevel = logLevelEnv.toLocaleLowerCase() as LogLevel
 }

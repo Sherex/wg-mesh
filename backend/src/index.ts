@@ -1,5 +1,11 @@
+import { args } from './lib/config'
 import { log } from './lib/logger'
 import { isInstalled, install } from './lib/rqlite'
+
+if (args.interactive) {
+  console.log('The --interactive switch is a planned feature! Exiting..')
+  process.exit(1)
+}
 
 ;(async () => {
   log('info', ['index', 'starting client...'])
