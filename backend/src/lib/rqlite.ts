@@ -1,6 +1,7 @@
 import axios from 'axios'
 import tar from 'tar'
-import fs from 'fs/promises'
+import fs from 'fs'
+import { spawn, ChildProcess } from 'child_process'
 import { log } from './logger'
 
 const installLocation = './.rqlite'
@@ -9,7 +10,7 @@ const rqliteServer = `${installLocation}/rqlited`
 export async function isInstalled (): Promise<boolean> {
   log('debug', ['rqlite', 'isInstalled', 'checking if exists', rqliteServer])
   try {
-    await fs.access(rqliteServer)
+    await fs.accessSync(rqliteServer)
     log('debug', ['rqlite', 'isInstalled', 'rqlited exists!'])
     return true
   } catch (error) {
@@ -20,7 +21,7 @@ export async function isInstalled (): Promise<boolean> {
 
 export async function install (version: string): Promise<void> {
   log('debug', ['rqlite', 'Starting installation'])
-  await fs.mkdir(installLocation, { recursive: true })
+  await fs.mkdirSync(installLocation, { recursive: true })
 
   const downloadUrl = await getArchiveUrl(version)
   log('debug', ['rqlite', 'downloading rqlite server', 'version', version])
@@ -31,12 +32,21 @@ export async function install (version: string): Promise<void> {
   })
 
   log('debug', ['rqlite', 'download complete!', 'extracting to', installLocation])
-  rqliteFile
-    .pipe(tar.extract({
-      cwd: installLocation,
-      strip: 1,
-      filter: path => path.includes('rqlited')
-    }))
+
+  await new Promise((resolve, reject) => {
+    rqliteFile
+      .pipe(tar.extract({
+        cwd: installLocation,
+        strip: 1,
+        filter: path => path.includes('rqlited')
+      }))
+      .on('close', () => {
+        resolve()
+      })
+      .on('error', () => {
+        reject(Error('Failed to extract archive!'))
+      })
+  })
 
   log('debug', ['rqlite', 'extraction complete!'])
 }
@@ -58,4 +68,34 @@ async function getArchiveUrl (version: string): Promise<string> {
   log('error', ['rqlite', 'getArchiveUrl', 'Couldn\'t find archive URL!', 'Exiting!'])
   // TODO: Provide instructions for manual download
   process.exit(1)
+}
+
+let node: ChildProcess | null = null
+// Child_process docs: https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
+export async function startServer (): Promise<void> {
+  if (node === null || node.killed) {
+    const logFile = fs.openSync(`${installLocation}/server.log`, 'a')
+    // TODO: Check that the server is actually spawned
+    node = spawn(`${rqliteServer}`, [`${installLocation}/db`], {
+      stdio: [
+        'ignore', logFile, logFile
+      ]
+    })
+    log('info', ['rqlite', 'startServer', 'successfully started server', 'pid', node.pid])
+  } else {
+    log('info', ['rqlite', 'startServer', 'server is already running', 'pid', node.pid])
+  }
+}
+
+export async function stopServer (): Promise<void> {
+  if (node === null || node.killed) {
+    log('info', ['rqlite', 'stopServer', 'server is already stopped'])
+  } else {
+    if (node.kill('SIGINT')) {
+      log('info', ['rqlite', 'stopServer', 'successfully stopped the server', 'pid', node.pid])
+    } else {
+      // TODO: Force shutdown the server
+      log('error', ['rqlite', 'stopServer', 'failed to stop the server', 'pid', node.pid])
+    }
+  }
 }
