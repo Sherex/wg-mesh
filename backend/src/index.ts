@@ -1,5 +1,6 @@
 import { args } from './lib/config'
 import { log } from './lib/logger'
+import { checkPrerequisites } from './lib/check-prerequisites'
 import { isInstalled, install, startServer, stopServer } from './lib/rqlite'
 
 if (args.interactive) {
@@ -8,6 +9,8 @@ if (args.interactive) {
 }
 
 ;(async () => {
+  log('info', ['index', 'checking prerequisites'])
+  await checkPrerequisites()
   log('info', ['index', 'checking rqlite server'])
   if (!await isInstalled()) await install('v5.4.0')
 
