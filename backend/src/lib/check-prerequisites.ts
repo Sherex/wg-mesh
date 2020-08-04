@@ -1,10 +1,25 @@
 import { exec as execCallback } from 'child_process'
 import { promisify } from 'util'
 import { log } from './logger'
+import isRoot from 'is-root'
 
 const exec = promisify(execCallback)
 
 export async function checkPrerequisites (): Promise<void> {
+  if (!isRoot()) {
+    console.log(`
+      #################### NOT RUN AS ROOT #####################
+
+      I'm sorry, but this client has to be run as root.
+      I will work on finding a better solution, but as of now
+      you will have to run this client with sudo / as root.
+
+      ##########################################################
+    `.replace(/^ */gm, ''))
+    process.exit(1)
+  }
+  log('debug', ['check-prerequisites', 'client is running as root'])
+
   try {
     await exec('ip -Version')
     log('debug', ['check-prerequisites', 'iproute2 is installed'])
@@ -38,5 +53,3 @@ export async function checkPrerequisites (): Promise<void> {
     process.exit(1)
   }
 }
-
-checkPrerequisites().catch(console.error)
