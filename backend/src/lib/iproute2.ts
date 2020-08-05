@@ -1,8 +1,8 @@
-import { exec } from 'child_process'
+import { exec as execCallback } from 'child_process'
 import { promisify } from 'util'
 import { log } from './logger'
 
-const execP = promisify(exec)
+const exec = promisify(execCallback)
 
 const validInterface = (name: string): boolean => /^wg\d+$/.test(name)
 
@@ -13,7 +13,7 @@ export async function createInterface (name: string): Promise<void> {
   }
   log('debug', ['iproute2', 'createInterface', 'creating interface', name])
   try {
-    await execP(`ip link add dev ${name} type wireguard`)
+    await exec(`ip link add dev ${name} type wireguard`)
     log('info', ['iproute2', 'createInterface', 'successfully created interface', name])
     return
   } catch (error) {
@@ -33,7 +33,7 @@ export async function deleteInterface (name: string): Promise<void> {
   }
   log('debug', ['iproute2', 'deleteInterface', 'deleting interface', name])
   try {
-    await execP(`ip link delete ${name}`)
+    await exec(`ip link delete ${name}`)
     log('info', ['iproute2', 'deleteInterface', 'successfully deleted interface', name])
     return
   } catch (error) {
