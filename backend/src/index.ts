@@ -17,7 +17,7 @@ if (config.interactive) {
   await createInterface('wg0')
 
   log('info', ['index', 'checking rqlite server'])
-  if (!await isInstalled()) await install(config.rqliteVersion)
+  if (!await isInstalled()) await install(config.rqlite.version)
 
   log('info', ['index', 'starting rqlite server'])
   await startServer()

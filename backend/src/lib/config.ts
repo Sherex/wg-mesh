@@ -24,5 +24,8 @@ const args = parseArgs(process.argv.slice(2), parseArgsOptions) as CliArgs
 export const config = {
   interactive: args.interactive,
   logLevel: args['log-level'],
-  rqliteVersion: 'V5.4.0'
+  rqlite: {
+    version: 'V5.4.0',
+    dataPath: './.rqlite'
+  }
 }

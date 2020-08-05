@@ -3,8 +3,9 @@ import tar from 'tar'
 import fs from 'fs'
 import { spawn, ChildProcess } from 'child_process'
 import { log } from './logger'
+import { config } from './config'
 
-const installLocation = './.rqlite'
+const installLocation = config.rqlite.dataPath
 const rqliteServer = `${installLocation}/rqlited`
 
 export async function isInstalled (): Promise<boolean> {
