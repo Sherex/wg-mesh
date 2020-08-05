@@ -121,6 +121,25 @@ export async function deleteIp (name: string, ip: string): Promise<void> {
   }
 }
 
+export async function setInterfaceState (name: string, state: 'up' | 'down'): Promise<void> {
+  if (!validInterface(name)) {
+    log('error', ['iproute2', 'setInterfaceState', 'wrong format on interface name', 'got', name])
+    throw Error('Wrong format on interface name')
+  }
+  if (state !== 'up' && state !== 'down') {
+    log('error', ['iproute2', 'setInterfaceState', 'wrong state', 'state has to be either up or down', 'got', state])
+    throw Error('Wrong format on state')
+  }
+  try {
+    await exec(`ip link set ${name} ${state}`)
+    log('info', ['iproute2', 'setInterfaceState', 'successfully set the state of', name, 'to', state])
+    return
+  } catch (error) {
+    log('error', ['iproute2', 'setInterfaceState', 'failed to set the state of', name, 'to', state])
+    throw error
+  }
+}
+
 export interface AddrInfo {
   family: string
   local: string

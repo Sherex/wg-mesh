@@ -23,6 +23,7 @@ if (config.interactive) {
   await rqlite.startServer()
 
   await ip.addIp('wg0', '10.50.0.20/24')
+  await ip.setInterfaceState('wg0', 'up')
 
   console.log(await ip.getInterface('wg0'))
 
