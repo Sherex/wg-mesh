@@ -1,6 +1,20 @@
 # WG-Mesh
 WG-Mesh is a distributed administration service for setting up peers and clients in a Wireguard network.
 
+## Development
+Run the development compiler `ts-node-dev`
+```sh
+# Start the dev server and set log-level to silly
+# Note: sudo is required as iproute2 and Wireguard commands are root only
+sudo npm run dev src/ -- --log-level silly
+```
+
+## Building
+Build using `tsc`
+```sh
+npm run build
+```
+
 ## Resources
 - [linux-release-info](https://www.npmjs.com/package/linux-release-info) - Check OS info for future potential limitations.
 - [rqlite-js](https://www.npmjs.com/package/rqlite-js) - Client library for interacting with rqlite.
