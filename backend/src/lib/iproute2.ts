@@ -4,10 +4,11 @@ import { log } from './logger'
 
 const exec = promisify(execCallback)
 
-const validInterface = (name: string): boolean => /^wg\d+$/.test(name)
+const validWgInterface = (name: string): boolean => /^wg\d+$/.test(name)
+const validInterface = (name: string): boolean => /^[a-z0-9]+$/i.test(name)
 
 export async function createInterface (name: string): Promise<void> {
-  if (!validInterface(name)) {
+  if (!validWgInterface(name)) {
     log('error', ['iproute2', 'createInterface', 'wrong format on interface name', 'got', name, 'expected', 'wg0..wgn'])
     throw Error('Wrong format on interface name')
   }
@@ -27,7 +28,7 @@ export async function createInterface (name: string): Promise<void> {
 }
 
 export async function deleteInterface (name: string): Promise<void> {
-  if (!validInterface(name)) {
+  if (!validWgInterface(name)) {
     log('error', ['iproute2', 'deleteInterface', 'wrong format on interface name', 'got', name, 'expected', 'wg0..wgn'])
     throw Error('Wrong format on interface name')
   }
@@ -38,10 +39,65 @@ export async function deleteInterface (name: string): Promise<void> {
     return
   } catch (error) {
     if (error.stderr.includes('Cannot find device') as boolean) {
-      log('debug', ['iproute2', 'createInterface', 'interface is already deleted'])
+      log('debug', ['iproute2', 'deleteInterface', 'interface is already deleted'])
       return
     }
     log('error', ['iproute2', 'deleteInterface', 'failed to delete interface', name, 'error', error])
     throw error
   }
+}
+
+export async function getInterfaces (): Promise<ShowIpAddress[]> {
+  log('debug', ['iproute2', 'getInterfaces', 'getting interfaces'])
+  try {
+    const { stdout } = await exec('ip -json address')
+    const output = JSON.parse(stdout) as ShowIpAddress[]
+    log('info', ['iproute2', 'getInterfaces', 'successfully got interfaces'])
+    return output
+  } catch (error) {
+    log('error', ['iproute2', 'getInterfaces', 'failed to get interfaces'])
+    throw error
+  }
+}
+
+export async function getInterface (name: string): Promise<ShowIpAddress | null> {
+  if (!validInterface(name)) {
+    log('error', ['iproute2', 'getInterface', 'wrong format on interface name', 'got', name, 'expected', 'wg0..wgn'])
+    throw Error('Wrong format on interface name')
+  }
+  const ipInterfaces = await getInterfaces()
+  const ipInterface = ipInterfaces.filter(int => int.ifname === name)
+  if (ipInterface.length < 1) return null
+  if (ipInterface.length > 1) {
+    log('warn', ['iproute2', 'getInterface', 'got more than one interface', 'returning first interface'])
+  }
+  return ipInterface[0]
+}
+
+export interface AddrInfo {
+  family: string
+  local: string
+  prefixlen: number
+  scope: string
+  label: string
+  valid_life_time: any
+  preferred_life_time: any
+  broadcast: string
+  dynamic?: boolean
+  noprefixroute?: boolean
+}
+
+export interface ShowIpAddress {
+  ifindex: number
+  ifname: string
+  flags: string[]
+  mtu: number
+  qdisc: string
+  operstate: string
+  group: string
+  txqlen: number
+  link_type: string
+  address: string
+  broadcast: string
+  addr_info: AddrInfo[]
 }

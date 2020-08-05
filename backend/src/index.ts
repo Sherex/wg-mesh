@@ -1,7 +1,7 @@
 import { config } from './lib/config'
 import { log } from './lib/logger'
 import { checkPrerequisites } from './lib/check-prerequisites'
-import { createInterface, deleteInterface } from './lib/iproute2'
+import { createInterface, deleteInterface, getInterface } from './lib/iproute2'
 import { isInstalled, install, startServer, stopServer } from './lib/rqlite'
 
 if (config.interactive) {
@@ -10,20 +10,23 @@ if (config.interactive) {
 }
 
 ;(async () => {
-  log('info', ['index', 'checking prerequisites'])
+  log('debug', ['index', 'checking prerequisites'])
   await checkPrerequisites()
 
   log('info', ['index', 'creating interface'])
   await createInterface('wg0')
 
-  log('info', ['index', 'checking rqlite server'])
+  log('debug', ['index', 'checking rqlite server'])
   if (!await isInstalled()) await install(config.rqlite.version)
 
-  log('info', ['index', 'starting rqlite server'])
+  log('debug', ['index', 'starting rqlite server'])
   await startServer()
+
+  console.log(await getInterface('wg0'))
+
   await new Promise(resolve => setTimeout(resolve, 10000))
 
-  log('info', ['index', 'stopping rqlite server'])
+  log('debug', ['index', 'stopping rqlite server'])
   await stopServer()
 
   log('info', ['index', 'deleting interface'])
