@@ -1,7 +1,7 @@
 import { config } from './lib/config'
 import { log } from './lib/logger'
 import { checkPrerequisites } from './lib/check-prerequisites'
-import { createInterface, deleteInterface } from './lib/wireguard'
+import { createInterface, deleteInterface } from './lib/iproute2'
 import { isInstalled, install, startServer, stopServer } from './lib/rqlite'
 
 if (config.interactive) {
