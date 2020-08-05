@@ -1,10 +1,10 @@
-import { args } from './lib/config'
+import { config } from './lib/config'
 import { log } from './lib/logger'
 import { checkPrerequisites } from './lib/check-prerequisites'
 import { createInterface, deleteInterface } from './lib/wireguard'
 import { isInstalled, install, startServer, stopServer } from './lib/rqlite'
 
-if (args.interactive) {
+if (config.interactive) {
   console.log('The --interactive switch is a planned feature! Exiting..')
   process.exit(1)
 }
@@ -17,7 +17,7 @@ if (args.interactive) {
   await createInterface('wg0')
 
   log('info', ['index', 'checking rqlite server'])
-  if (!await isInstalled()) await install('v5.4.0')
+  if (!await isInstalled()) await install(config.rqliteVersion)
 
   log('info', ['index', 'starting rqlite server'])
   await startServer()

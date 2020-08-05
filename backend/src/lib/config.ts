@@ -19,4 +19,10 @@ const parseArgsOptions = {
   ]
 }
 
-export const args = parseArgs(process.argv.slice(2), parseArgsOptions) as CliArgs
+const args = parseArgs(process.argv.slice(2), parseArgsOptions) as CliArgs
+
+export const config = {
+  interactive: args.interactive,
+  logLevel: args['log-level'],
+  rqliteVersion: 'V5.4.0'
+}
