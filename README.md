@@ -15,12 +15,17 @@ Build using `tsc`
 npm run build
 ```
 
+## TODO
+- [ ] Deployment by ssh
+- [ ] Deployment by wget/curl
+
 ## Resources
 - [linux-release-info](https://www.npmjs.com/package/linux-release-info) - Check OS info for future potential limitations.
 - [rqlite-js](https://www.npmjs.com/package/rqlite-js) - Client library for interacting with rqlite.
 - [node-linux](https://github.com/coreybutler/node-linux) - Library for installing script as a service.
 - [node-windows](https://github.com/coreybutler/node-windows) - Library for installing script as a service.
 - [node-mac](https://github.com/coreybutler/node-mac) - Library for installing script as a service.
+- [obfsproxy](https://gitweb.torproject.org/pluggable-transports/obfsproxy.git) - SOCKS 5 proxy for obfuscating traffic
 
 # LICENSE
 [MIT](LICENSE)
