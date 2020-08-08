@@ -17,20 +17,17 @@ if (config.interactive) {
   log('info', ['index', 'creating interface'])
   await ip.createInterface('wg1')
 
-  log('debug', ['index', 'checking rqlite server'])
-  if (!await rqlite.isInstalled()) await rqlite.install(config.rqlite.version)
-
   log('debug', ['index', 'starting rqlite server'])
   await rqlite.startServer()
 
   await ip.addIp('wg1', '10.50.0.20/24')
   await ip.setInterfaceState('wg1', 'up')
 
-  console.log(await ip.getInterface('wg1'))
+  // console.log(await ip.getInterface('wg1'))
 
-  console.log((await wireguard.getInfo()))
+  // console.log((await wireguard.getInfo()))
 
-  await new Promise(resolve => setTimeout(resolve, 10000))
+  await new Promise(resolve => setTimeout(resolve, 3000))
 
   log('debug', ['index', 'stopping rqlite server'])
   await rqlite.stopServer()

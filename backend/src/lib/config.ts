@@ -25,7 +25,7 @@ export const config = {
   interactive: args.interactive,
   logLevel: args['log-level'],
   rqlite: {
-    version: 'V5.4.0',
+    version: 'v5.4.0',
     dataPath: './.rqlite'
   }
 }

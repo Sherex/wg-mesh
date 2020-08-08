@@ -73,7 +73,16 @@ async function getArchiveUrl (version: string): Promise<string> {
 
 let node: ChildProcess | null = null
 // Child_process docs: https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
-export async function startServer (): Promise<void> {
+interface StartServerOptions {
+  noInstall?: boolean
+}
+export async function startServer (options: StartServerOptions = {}): Promise<void> {
+  if (!await isInstalled() && options.noInstall !== true) {
+    log('debug', ['rqlite', 'startServer', 'executable not installed', 'installing..'])
+    await install(config.rqlite.version)
+  }
+  if (!await isInstalled()) throw Error('RQLite is not installed! Run .install() first.')
+
   if (node === null || node.killed) {
     const logFile = fs.openSync(`${installLocation}/server.log`, 'a')
     // TODO: Check that the server is actually spawned
@@ -91,6 +100,9 @@ export async function startServer (): Promise<void> {
 export async function stopServer (): Promise<void> {
   if (node === null || node.killed) {
     log('info', ['rqlite', 'stopServer', 'server is already stopped'])
+  } else if (!await isInstalled()) {
+    log('warn', ['rqlite', 'stopServer', 'server executable does not exist', 'continuing anyway..'])
+    node = null
   } else {
     if (node.kill('SIGINT')) {
       log('info', ['rqlite', 'stopServer', 'successfully stopped the server', 'pid', node.pid])
