@@ -27,5 +27,6 @@ export const config = {
   rqlite: {
     version: 'v5.4.0',
     dataPath: './.rqlite'
-  }
+  },
+  tempDir: './.tmp'
 }
