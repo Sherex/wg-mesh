@@ -4,9 +4,9 @@ import { log } from './logger'
 
 const exec = promisify(execCallback)
 
-const validWgInterface = (name: string): boolean => /^wg\d+$/.test(name)
-const validInterface = (name: string): boolean => /^[a-z0-9]+$/i.test(name)
-const validIPv4 = (ip: string): boolean => /^(?:\d{1,3}\.){3}\d{1,3}\/\d{2}$/m.test(ip)
+export const validWgInterface = (name: string): boolean => /^wg\d+$/.test(name)
+export const validInterface = (name: string): boolean => /^[a-z0-9]+$/i.test(name)
+export const validIPv4 = (ip: string): boolean => /^(?:\d{1,3}\.){3}\d{1,3}\/\d{2}$/m.test(ip)
 
 export async function createInterface (name: string): Promise<void> {
   if (!validWgInterface(name)) {
