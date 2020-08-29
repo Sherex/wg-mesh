@@ -15,6 +15,9 @@ Build using `tsc`
 npm run build
 ```
 
+## Docs
+The database ER diagram can be found at [dbdiagram.io](https://dbdiagram.io/d/5f4a96be88d052352cb544f3)
+
 ## TODO
 - [ ] Deployment by ssh
 - [ ] Deployment by wget/curl
