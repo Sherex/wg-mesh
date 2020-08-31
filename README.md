@@ -16,7 +16,7 @@ npm run build
 ```
 
 ## Docs
-The database ER diagram can be found at [dbdiagram.io](https://dbdiagram.io/d/5f4a96be88d052352cb544f3)
+The database ER diagram can be found at [dbdiagram.io](https://dbdiagram.io/d/5f4cea8988d052352cb56ccd)
 
 ## TODO
 - [ ] Deployment by ssh
