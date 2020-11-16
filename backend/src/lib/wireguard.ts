@@ -6,21 +6,20 @@ import * as tempFile from './temp-file'
 
 const exec = promisify(execCallback)
 
-export interface WGInfo {
-  isRunning: boolean
-  host: HostInfo | null
-  peers: PeerInfo[]
-}
+const hostKeyString = 'interface\tprivateKey\tpublicKey\tlistenPort\tfwmark'
+const peerKeyString = 'interface\tpublicKey\tpresharedKey\tendpoint\tallowedIps\tlatestHandshake\ttransferRx\ttransferTx\tpersistentKeepalive'
 
-export interface HostInfo {
+export interface WGInfo {
   interface: string
   privateKey: string
   publicKey: string
   listenPort: string
   fwmark: string
+  peers?: PeerInfo[]
 }
 
 export interface PeerInfo {
+  interface: string
   publicKey: string
   presharedKey: string
   endpoint: string
@@ -31,58 +30,75 @@ export interface PeerInfo {
   persistentKeepalive: number
 }
 
-export async function getInfo (): Promise<WGInfo> {
-  const returnInfo: WGInfo = {
-    isRunning: false,
-    host: null,
-    peers: []
-  }
+export async function getInfo (): Promise<WGInfo[]> {
+  const returnInfo: WGInfo[] = []
   try {
     const output = await exec('wg show all dump')
-    log('debug', ['wireguard', 'getHostInfo', 'successfully got information for host'])
+    log('debug', ['wireguard', 'getWGInfo', 'successfully got information for host'])
 
     if (output.stdout === '') return returnInfo
-    returnInfo.isRunning = true
 
-    // BUG: Handle multiple interfaces, for every interface the first entry is always the host
     const infoLines = output.stdout.split('\n').filter(line => line !== '')
-    returnInfo.host = parseString(infoLines[0], 'host') as HostInfo | null
-    returnInfo.peers = infoLines.splice(1).map(infoLine => parseString(infoLine, 'peer') as PeerInfo)
+    infoLines.forEach(line => {
+      const wgInterface = parseString(line, 'host') as WGInfo | null
+      if (wgInterface !== null) {
+        returnInfo.push(wgInterface)
+      } else {
+        const peer = parseString(line, 'peer') as PeerInfo | null
+        if (peer === null) {
+          log('debug', ['wireguard', 'getWGInfo', 'failed to parse peer'])
+          return
+        }
+
+        const intIndex = returnInfo.findIndex(info => info.interface === peer.interface)
+        log('debug', ['wireguard', 'getWGInfo', 'intIndex', intIndex])
+        if (intIndex === -1) {
+          throw new Error('Couldn\'t find peer interface info')
+        }
+
+        const returnInt = returnInfo[intIndex]
+        if (typeof returnInt.peers === 'undefined') {
+          returnInt.peers = [peer]
+        } else {
+          returnInt.peers.push(peer)
+        }
+      }
+    })
 
     return returnInfo
   } catch (error) {
-    log('error', ['wireguard', 'getHostInfo', 'failed to get information for host', 'error', error.message])
+    log('error', ['wireguard', 'getWGInfo', 'failed to get information for host', 'error', error.message])
     throw error
   }
 }
 
-function parseString (valueString: string, type: 'host' | 'peer' = 'host'): HostInfo | PeerInfo {
-  let keyString: string
-  if (type === 'host') {
-    keyString = 'interface\tprivateKey\tpublicKey\tlistenPort\tfwmark'
-  } else {
-    keyString = 'interface\tpublicKey\tpresharedKey\tendpoint\tallowedIps\tlatestHandshake\ttransferRx\ttransferTx\tpersistentKeepalive'
-  }
+function parseString (valueString: string, type: 'host' | 'peer' = 'host'): WGInfo | PeerInfo | null {
+  const keyString = type === 'host' ? hostKeyString : peerKeyString
 
   const parsedInfo: {[key: string]: string | number | null} = {}
   const values = valueString.split('\t')
+  const keys = keyString.split('\t')
+
+  if (keys.length !== values.length) {
+    log('silly', ['wireguard', 'parseString', 'early return', 'unequal length'])
+    return null
+  }
   // TODO: parse allowedIps as an array of ips
-  keyString.split('\t').forEach((key, i) => {
+  keys.forEach((key, i) => {
     let value: string | number | null = values[i] === '(none)' || values[i] === '' ? null : values[i]
     if (['latestHandshake', 'transferRx', 'transferTx', 'persistentKeepalive'].includes(key)) value = Number(value)
     parsedInfo[key] = value
   })
 
-  if (isHostInfo(parsedInfo)) {
-    return parsedInfo as HostInfo
+  if (isWGInfo(parsedInfo)) {
+    return parsedInfo as WGInfo
   } else if (isPeerInfo(parsedInfo)) {
     return parsedInfo as PeerInfo
   }
-  log('error', ['wireguard', 'parseString', 'invalid object returned from parsing', 'check parsing logic!', 'type', type])
-  throw Error(`Failed to parse line of type "${type}"`)
+  return null
 }
 
-export function isHostInfo (data: any): data is HostInfo {
+export function isWGInfo (data: any): data is WGInfo {
   const validKeys = ['interface', 'privateKey', 'publicKey', 'listenPort', 'fwmark']
   for (const validKey of validKeys) {
     if (!Object.prototype.hasOwnProperty.call(data, validKey)) return false
@@ -136,11 +152,6 @@ export async function setConfig (wgInterface: string, options: ConfigOptions): P
   }
 }
 
-setConfig('wg0', {
-  fwmark: 'off',
-  listenPort: 20227,
-  privateKey: 'YA/ON7SSmVsYk+PKXHX8ayryerilzCUJDiOEMATmh2k='
-}).then(console.log).catch(console.error)
 export interface AddPeersOptions {
   base64PublicKey: string
   presharedKey?: string
