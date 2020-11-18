@@ -3,15 +3,15 @@ import { config } from './config'
 
 const dataPath = config.tempDir
 
-interface TempFileHandler {
+export interface TempFileHandler {
   path: string
-  get: Function
-  delete: Function
+  get: () => Promise<string>
+  delete: () => Promise<void>
 }
 
 export async function save (data: string): Promise<TempFileHandler> {
   const fileName = new Date().toISOString()
-  const filePath = `${dataPath}/${fileName}`
+  const filePath = `${dataPath}/${fileName}-${Math.ceil(Math.random() * 1000)}`
   await mkdir(dataPath, { recursive: true })
   await writeFile(filePath, data)
 
