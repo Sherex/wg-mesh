@@ -1,8 +1,17 @@
 import express from 'express'
-import v1Peers from './v1-peers'
-import v1Clients from './v1-clients'
-
+import { rootRouter } from './root'
+import { notFoundRouter } from './not-found'
+import { peersRouter } from './peers'
 const app = express()
 
-app.use('/api/v1/peers', v1Peers)
-app.use('/api/v1/clients', v1Clients)
+app.use('/', rootRouter)
+app.use('/api/v1/peers', peersRouter)
+app.use('/*', notFoundRouter)
+
+export async function start (port = 80): Promise<void> {
+  return await new Promise((resolve, reject) => {
+    app.listen(port, '0.0.0.0', () => {
+      resolve()
+    })
+  })
+}
