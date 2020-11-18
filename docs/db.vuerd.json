@@ -2,7 +2,7 @@
   "canvas": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": 2,
+    "scrollTop": 14,
     "scrollLeft": 0,
     "show": {
       "tableComment": true,
@@ -114,7 +114,7 @@
           "active": false,
           "left": 115,
           "top": 161,
-          "zIndex": 158,
+          "zIndex": 179,
           "widthName": 60,
           "widthComment": 60
         },
@@ -194,29 +194,6 @@
             "id": "eea8d593-1214-6876-b089-28497b19ba6d"
           },
           {
-            "name": "private_key",
-            "comment": "",
-            "dataType": "TEXT",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": true
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 68,
-              "widthComment": 60,
-              "widthDataType": 60,
-              "widthDefault": 60
-            },
-            "id": "f2de49c7-78e1-0660-b90a-b9c5fd4c8876"
-          },
-          {
             "name": "listen_port",
             "comment": "",
             "dataType": "INTEGER",
@@ -261,52 +238,6 @@
               "widthDefault": 60
             },
             "id": "77e02325-3bf9-d72b-79be-a4e8c2c1a6b0"
-          },
-          {
-            "name": "public_key",
-            "comment": "",
-            "dataType": "TEXT",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": false
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 63,
-              "widthComment": 60,
-              "widthDataType": 60,
-              "widthDefault": 60
-            },
-            "id": "c8bb9986-3fd9-fd16-7959-110c056c7354"
-          },
-          {
-            "name": "preshared_key",
-            "comment": "",
-            "dataType": "TEXT",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": false
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 88,
-              "widthComment": 60,
-              "widthDataType": 60,
-              "widthDefault": 60
-            },
-            "id": "71cc72d4-1c81-6790-8248-699fb643213c"
           },
           {
             "name": "allowed_ips",
@@ -382,7 +313,7 @@
           "active": false,
           "left": 611,
           "top": 80,
-          "zIndex": 157,
+          "zIndex": 168,
           "widthName": 61,
           "widthComment": 170
         },
@@ -553,7 +484,7 @@
             "option": {
               "autoIncrement": false,
               "primaryKey": false,
-              "unique": false,
+              "unique": true,
               "notNull": false
             },
             "ui": {
@@ -570,20 +501,117 @@
           }
         ],
         "ui": {
-          "active": true,
+          "active": false,
           "left": 635,
           "top": 533,
-          "zIndex": 159,
+          "zIndex": 163,
           "widthName": 69,
           "widthComment": 150
         },
         "id": "aa3b6be7-48af-e09d-272f-f19a8511b87a"
+      },
+      {
+        "name": "client",
+        "comment": "[TODO] Regular WG peer",
+        "columns": [
+          {
+            "name": "id",
+            "comment": "",
+            "dataType": "INTEGER",
+            "default": "",
+            "option": {
+              "autoIncrement": true,
+              "primaryKey": true,
+              "unique": true,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "33eb70c7-4749-1c45-b811-7b8b79ba8c68"
+          },
+          {
+            "name": "name",
+            "comment": "",
+            "dataType": "TEXT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": true,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "81dede32-c533-1896-a442-a78cb1a79b5d"
+          },
+          {
+            "name": "description",
+            "comment": "",
+            "dataType": "TEXT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 65,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "b648f895-9e9c-d946-ec21-29efbbe9a085"
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 1039,
+          "top": 109,
+          "zIndex": 178,
+          "widthName": 60,
+          "widthComment": 151
+        },
+        "id": "ca13724a-1dd9-7c27-30c6-3eaec490139c"
       }
     ],
     "indexes": []
   },
   "memo": {
-    "memos": []
+    "memos": [
+      {
+        "value": "Deployment and peer link?\n\nFigure out relationship between deployment-peer-config.\n\nIPs, where do they belong?\npeer table? Or it's own table referencing peers.\n\nEndpoint IP. Same table as IPs? bool if endpoint or peer ip?",
+        "id": "1e2d3cb9-7d5c-100d-654f-eb71ccb0d25e",
+        "ui": {
+          "active": true,
+          "left": 378,
+          "top": 296,
+          "zIndex": 185,
+          "width": 260,
+          "height": 196
+        }
+      }
+    ]
   },
   "relationship": {
     "relationships": [
@@ -627,7 +655,7 @@
             "0f5f9ffc-6ebd-9702-c07f-13d22ff60af3"
           ],
           "x": 611,
-          "y": 227.25,
+          "y": 196.5,
           "direction": "left"
         },
         "id": "d06212e7-5159-d093-8e01-535cacdc824a",
@@ -641,7 +669,7 @@
             "9d58f031-86d3-d650-090f-2143b6d7d722"
           ],
           "x": 806,
-          "y": 374.5,
+          "y": 313,
           "direction": "bottom"
         },
         "end": {
