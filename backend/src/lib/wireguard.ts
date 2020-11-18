@@ -120,7 +120,7 @@ export interface ConfigOptions {
   privateKey?: string
 }
 
-export async function setConfig (wgInterface: string, options: ConfigOptions): Promise<void> {
+export async function setConfig (wgInterface: string, options?: ConfigOptions): Promise<void> {
   if (!validWgInterface(wgInterface)) {
     log('error', ['wireguard', 'setConfig', 'wrong format on interface name', 'got', wgInterface, 'expected', 'wg0..wgn'])
     throw Error('Wrong format on interface name')
@@ -128,17 +128,19 @@ export async function setConfig (wgInterface: string, options: ConfigOptions): P
   let configString: string = wgInterface
   let file
 
-  for (let [key, value] of Object.entries(options)) {
-    let stringVal = String(value)
-    key = key === 'listenPort' ? 'listen-port' : key
-    key = key === 'privateKey' ? 'private-key' : key
+  if (typeof options === 'object') {
+    for (let [key, value] of Object.entries(options)) {
+      let stringVal = String(value)
+      key = key === 'listenPort' ? 'listen-port' : key
+      key = key === 'privateKey' ? 'private-key' : key
 
-    if (key === 'private-key') {
-      file = await tempFile.save(stringVal)
-      stringVal = file.path
+      if (key === 'private-key') {
+        file = await tempFile.save(stringVal)
+        stringVal = file.path
+      }
+
+      configString += ` ${key} ${stringVal}`
     }
-
-    configString += ` ${key} ${stringVal}`
   }
 
   try {
