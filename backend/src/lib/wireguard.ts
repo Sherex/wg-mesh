@@ -155,8 +155,11 @@ export async function setConfig (wgInterface: string, options?: ConfigOptions): 
 }
 
 export interface AddPeersOptions {
-  base64PublicKey: string
+  peerPublicKey: string
   presharedKey?: string
+  endpoint?: string
+  persistentKeepalive?: number
+  allowedIps?: string[]
 }
 
 export interface PeerConfigOptions {
@@ -165,14 +168,63 @@ export interface PeerConfigOptions {
   privateKey?: string
 }
 
-export async function addPeer (options: AddPeersOptions): Promise<void> {
-  // TODO: Create addPeer()
+export async function addPeer (wgInterface: string, options: AddPeersOptions): Promise<void> {
+  if (!validWgInterface(wgInterface)) {
+    log('error', ['wireguard', 'addPeer', 'wrong format on interface name', 'got', wgInterface, 'expected', 'wg0..wgn'])
+    throw Error('Wrong format on interface name')
+  }
+
+  const { configString, files } = await optionsToCli(options)
+
+  try {
+    await exec(`wg set ${wgInterface} ${configString}`)
+    log('debug', ['wireguard', 'addPeer', 'successfully added peer for', wgInterface])
+  } catch (error) {
+    log('error', ['wireguard', 'addPeer', 'failed to add peer for', wgInterface, 'error', error.message])
+    throw error
+  } finally {
+    if (files.length > 0) await Promise.all(files.map(async file => await file.delete()))
+  }
 }
 
-export async function deletePeer (base64PublicKey: string): Promise<void> {
-  // TODO: Create deletePeer()
+export async function deletePeer (wgInterface: string, peerPublicKey: string): Promise<void> {
+  if (!validWgInterface(wgInterface)) {
+    log('error', ['wireguard', 'deletePeer', 'wrong format on interface name', 'got', wgInterface, 'expected', 'wg0..wgn'])
+    throw Error('Wrong format on interface name')
+  }
+  try {
+    await exec(`wg set ${wgInterface} peer ${peerPublicKey} remove`)
+  } catch (error) {
+    log('error', ['wireguard', 'deletePeer', 'failed to delete peer for', wgInterface, 'error', error.message])
+  }
 }
 
-// Options:
-// set <interface> [listen-port <port>] [fwmark <fwmark>] [private-key <file-path>] [peer <base64-public-key> [remove] [preshared-key <file-path>] [endpoint <ip>:<port>]
-// [persistent-keepalive  <interval seconds>] [allowed-ips <ip1>/<cidr1>[,<ip2>/<cidr2>]...] ]...
+interface OptionsToCliReturn {
+  files: tempFile.TempFileHandler[]
+  configString: string
+}
+
+async function optionsToCli (options: Object): Promise<OptionsToCliReturn> {
+  const files: tempFile.TempFileHandler[] = []
+  let configString: string = ''
+  for (let [key, value] of Object.entries(options)) {
+    let stringVal = String(value)
+    key = key.replace(/([A-Z])/g, '-$1').toLowerCase()
+
+    if (['private-key', 'preshared-key'].includes(key)) {
+      const file = await tempFile.save(stringVal)
+      stringVal = file.path
+      files.push(file)
+    }
+
+    if (key === 'peer-public-key') {
+      key = 'peer'
+    }
+
+    configString += ` ${key} ${stringVal}`
+  }
+  return {
+    files,
+    configString: configString.trim()
+  }
+}
