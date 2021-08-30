@@ -23,7 +23,7 @@ export interface PeerInfo {
   publicKey: string
   presharedKey: string
   endpoint: string
-  allowedIps: string
+  allowedIps: string[]
   latestHandshake: number
   transferRx: number
   transferTx: number
@@ -75,7 +75,7 @@ export async function getInfo (): Promise<WGInfo[]> {
 function parseString (valueString: string, type: 'host' | 'peer' = 'host'): WGInfo | PeerInfo | null {
   const keyString = type === 'host' ? hostKeyString : peerKeyString
 
-  const parsedInfo: {[key: string]: string | number | null} = {}
+  const parsedInfo: {[key: string]: string | number | string[] | null} = {}
   const values = valueString.split('\t')
   const keys = keyString.split('\t')
 
@@ -83,10 +83,11 @@ function parseString (valueString: string, type: 'host' | 'peer' = 'host'): WGIn
     log('silly', ['wireguard', 'parseString', 'early return', 'unequal length'])
     return null
   }
-  // TODO: parse allowedIps as an array of ips
+
   keys.forEach((key, i) => {
-    let value: string | number | null = values[i] === '(none)' || values[i] === '' ? null : values[i]
+    let value: string | number | string[] | null = values[i] === '(none)' || values[i] === '' ? null : values[i]
     if (['latestHandshake', 'transferRx', 'transferTx', 'persistentKeepalive'].includes(key)) value = Number(value)
+    else if (key === 'allowedIps' && typeof value === 'string') value = value.split(',')
     parsedInfo[key] = value
   })
 
