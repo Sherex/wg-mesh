@@ -4,11 +4,13 @@
   "private": true,
   "description": "An UI to control and setup Wireguard peers",
   "main": "dist/index.js",
+  "bin": "dist/index.js",
   "files": [
     "dist/"
   ],
   "scripts": {
     "build": "tsc",
+    "compile": "npm run build && pkg ./package.json --out-path ./dist/",
     "dev": "ts-node-dev --no-notify",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
@@ -36,6 +38,7 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.1",
+    "pkg": "^4.4.9",
     "ts-node-dev": "1.0.0-pre.56",
     "typescript": "3.9.7"
   }
