@@ -1,8 +1,8 @@
 import { exec as execCallback } from 'child_process'
 import { promisify } from 'util'
-import { log } from './logger'
-import { validWgInterface } from './iproute2'
-import * as tempFile from './temp-file'
+import { log } from './logger.js'
+import { validWgInterface } from './iproute2.js'
+import * as tempFile from './temp-file.js'
 
 const exec = promisify(execCallback)
 
@@ -66,7 +66,7 @@ export async function getInfo (): Promise<WGInfo[]> {
     })
 
     return returnInfo
-  } catch (error) {
+  } catch (error: any) { // TODO: Typing for error (none available with stderr)
     log('error', ['wireguard', 'getWGInfo', 'failed to get information for host', 'error', error.message])
     throw error
   }
@@ -147,7 +147,7 @@ export async function setConfig (wgInterface: string, options?: ConfigOptions): 
   try {
     await exec(`wg set ${configString}`)
     log('debug', ['wireguard', 'setConfig', 'successfully set config for', wgInterface])
-  } catch (error) {
+  } catch (error: any) { // TODO: Typing for error (none available with stderr)
     log('error', ['wireguard', 'setConfig', 'failed to set config for', wgInterface, 'error', error.message])
     throw error
   } finally {
@@ -180,7 +180,7 @@ export async function addPeer (wgInterface: string, options: AddPeersOptions): P
   try {
     await exec(`wg set ${wgInterface} ${configString}`)
     log('debug', ['wireguard', 'addPeer', 'successfully added peer for', wgInterface])
-  } catch (error) {
+  } catch (error: any) { // TODO: Typing for error (none available with stderr)
     log('error', ['wireguard', 'addPeer', 'failed to add peer for', wgInterface, 'error', error.message])
     throw error
   } finally {
@@ -195,7 +195,7 @@ export async function deletePeer (wgInterface: string, peerPublicKey: string): P
   }
   try {
     await exec(`wg set ${wgInterface} peer ${peerPublicKey} remove`)
-  } catch (error) {
+  } catch (error: any) { // TODO: Typing for error (none available with stderr)
     log('error', ['wireguard', 'deletePeer', 'failed to delete peer for', wgInterface, 'error', error.message])
   }
 }

@@ -1,10 +1,10 @@
-import { config } from './lib/config'
-import { log } from './lib/logger'
-import { checkPrerequisites } from './lib/check-prerequisites'
-import * as ip from './lib/iproute2'
-import * as rqlite from './lib/rqlite'
-import * as wireguard from './lib/wireguard'
-import * as api from './routes'
+import { config } from './lib/config.js'
+import { log } from './lib/logger.js'
+import { checkPrerequisites } from './lib/check-prerequisites.js'
+import * as ip from './lib/iproute2.js'
+import * as rqlite from './lib/rqlite.js'
+import * as wireguard from './lib/wireguard.js'
+import * as api from './routes/index.js'
 
 if (config.interactive) {
   console.log('The --interactive switch is a planned feature! Exiting..')

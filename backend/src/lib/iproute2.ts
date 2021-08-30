@@ -1,6 +1,6 @@
 import { exec as execCallback } from 'child_process'
 import { promisify } from 'util'
-import { log } from './logger'
+import { log } from './logger.js'
 
 const exec = promisify(execCallback)
 
@@ -18,7 +18,7 @@ export async function createInterface (name: string): Promise<void> {
     await exec(`ip link add dev ${name} type wireguard`)
     log('info', ['iproute2', 'createInterface', 'successfully created interface', name])
     return
-  } catch (error) {
+  } catch (error: any) { // TODO: Typing for error (none available with stderr)
     if (error.stderr.includes('File exists') as boolean) {
       log('warn', ['iproute2', 'createInterface', 'interface already exists'])
       return
@@ -38,7 +38,7 @@ export async function deleteInterface (name: string): Promise<void> {
     await exec(`ip link delete ${name}`)
     log('info', ['iproute2', 'deleteInterface', 'successfully deleted interface', name])
     return
-  } catch (error) {
+  } catch (error: any) { // TODO: Typing for error (none available with stderr)
     if (error.stderr.includes('Cannot find device') as boolean) {
       log('warn', ['iproute2', 'deleteInterface', 'interface is already deleted'])
       return
@@ -55,7 +55,7 @@ export async function getInterfaces (): Promise<ShowIpAddress[]> {
     const output = JSON.parse(stdout) as ShowIpAddress[]
     log('info', ['iproute2', 'getInterfaces', 'successfully got interfaces'])
     return output
-  } catch (error) {
+  } catch (error: any) { // TODO: Typing for error (none available with stderr)
     log('error', ['iproute2', 'getInterfaces', 'failed to get interfaces'])
     throw error
   }
@@ -88,7 +88,7 @@ export async function addIp (name: string, ip: string): Promise<void> {
     await exec(`ip address add dev ${name} ${ip}`)
     log('info', ['iproute2', 'addIp', 'successfully added an IP to', name, 'IP', ip])
     return
-  } catch (error) {
+  } catch (error: any) { // TODO: Typing for error (none available with stderr)
     if (error.stderr.includes('File exists') as boolean) {
       log('warn', ['iproute2', 'addIp', 'ip exists already on interface', name, 'IP', ip])
       return
@@ -111,7 +111,7 @@ export async function deleteIp (name: string, ip: string): Promise<void> {
     await exec(`ip address delete dev ${name} ${ip}`)
     log('info', ['iproute2', 'deleteIp', 'successfully deleted an IP from', name, 'IP', ip])
     return
-  } catch (error) {
+  } catch (error: any) { // TODO: Typing for error (none available with stderr)
     if (error.stderr.includes('Cannot assign requested address') as boolean) {
       log('warn', ['iproute2', 'deleteIp', 'ip does not exist on interface', name, 'IP', ip])
       return
@@ -134,7 +134,7 @@ export async function setInterfaceState (name: string, state: 'up' | 'down'): Pr
     await exec(`ip link set ${name} ${state}`)
     log('info', ['iproute2', 'setInterfaceState', 'successfully set the state of', name, 'to', state])
     return
-  } catch (error) {
+  } catch (error: any) { // TODO: Typing for error (none available with stderr)
     log('error', ['iproute2', 'setInterfaceState', 'failed to set the state of', name, 'to', state])
     throw error
   }

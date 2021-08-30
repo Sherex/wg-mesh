@@ -1,5 +1,5 @@
 import parseArgs from 'minimist'
-import { LogLevel } from './logger'
+import { LogLevel } from './logger.js'
 
 interface CliArgs extends parseArgs.ParsedArgs {
   interactive: boolean

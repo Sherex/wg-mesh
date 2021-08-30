@@ -2,8 +2,8 @@ import axios from 'axios'
 import tar from 'tar'
 import fs from 'fs'
 import { spawn, ChildProcess } from 'child_process'
-import { log } from './logger'
-import { config } from './config'
+import { log } from './logger.js'
+import { config } from './config.js'
 
 const installLocation = config.rqlite.dataPath
 const rqliteServer = `${installLocation}/rqlited`
@@ -34,7 +34,7 @@ export async function install (version: string): Promise<void> {
 
   log('debug', ['rqlite', 'download complete!', 'extracting to', installLocation])
 
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     rqliteFile
       .pipe(tar.extract({
         cwd: installLocation,

@@ -1,5 +1,5 @@
 import { mkdir, writeFile, readFile, unlink } from 'fs/promises'
-import { config } from './config'
+import { config } from './config.js'
 
 const dataPath = config.tempDir
 

@@ -1,6 +1,6 @@
 import { exec as execCallback } from 'child_process'
 import { promisify } from 'util'
-import { log } from './logger'
+import { log } from './logger.js'
 import isRoot from 'is-root'
 
 const exec = promisify(execCallback)

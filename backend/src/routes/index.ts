@@ -1,7 +1,7 @@
 import express from 'express'
-import { rootRouter } from './root'
-import { notFoundRouter } from './not-found'
-import { peersRouter } from './peers'
+import { rootRouter } from './root.js'
+import { notFoundRouter } from './not-found.js'
+import { peersRouter } from './peers.js'
 const app = express()
 
 app.use('/', rootRouter)

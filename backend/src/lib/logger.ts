@@ -1,7 +1,7 @@
-import { config } from './config'
+import { config } from './config.js'
 
 export type LogLevel = 'silly' | 'debug' | 'info' | 'verbose' | 'warn' | 'error'
-export type LogMessage = string | number
+export type LogMessage = string | number | undefined
 
 let minimumLogLevel: LogLevel = 'silly'
 
