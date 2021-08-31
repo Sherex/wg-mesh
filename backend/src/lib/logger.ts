@@ -1,7 +1,8 @@
 import { config } from './config.js'
 
+// TODO: Use enum?
 export type LogLevel = 'silly' | 'debug' | 'info' | 'verbose' | 'warn' | 'error'
-export type LogMessage = string | number | undefined
+export type LogMessage = string | number | undefined | Error
 
 let minimumLogLevel: LogLevel = 'silly'
 
@@ -13,6 +14,8 @@ function isLogLevel (level: string | undefined): level is LogLevel {
 const logLevelEnv = config.logLevel
 if (isLogLevel(logLevelEnv)) {
   minimumLogLevel = logLevelEnv.toLocaleLowerCase() as LogLevel
+} else {
+  log('warn', ['logger', 'invalid minimun loglevel in config!', logLevelEnv, 'expected one of: silly | debug | info | verbose | warn | error'])
 }
 
 function log (level: LogLevel, message: LogMessage | LogMessage[]): void {
@@ -23,6 +26,10 @@ function log (level: LogLevel, message: LogMessage | LogMessage[]): void {
       message.join(' - ')
     }`
   )
+  if (getLevel(minimumLogLevel) >= getLevel('debug')) {
+    const error = message.find(part => part instanceof Error)
+    if (typeof error !== 'undefined') console.error(error)
+  }
 }
 
 function getDateTime (): string {
