@@ -15,7 +15,7 @@
   "scripts": {
     "build": "tsc",
     "compile": "npm run build && pkg ./package.json --out-path ./dist/",
-    "dev": "ts-node-dev --no-notify",
+    "dev": "node --loader ts-node/esm",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "test": "npm run lint"
@@ -43,7 +43,7 @@
     "eslint-plugin-promise": "5.1.0",
     "eslint-plugin-standard": "4.1.0",
     "pkg": "^5.3.1",
-    "ts-node-dev": "1.1.8",
+    "ts-node": "^10.2.1",
     "typescript": "4.4.2"
   }
 }
