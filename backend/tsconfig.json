@@ -5,7 +5,11 @@
     "target": "ES6",
     "moduleResolution": "Node",
     "outDir": "dist",
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "rqlite-js": ["src/rqlite-js"]
+    }
   },
   "include": [
     "src/"

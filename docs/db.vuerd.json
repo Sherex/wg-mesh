@@ -1,9 +1,11 @@
 {
   "canvas": {
+    "version": "2.2.2",
     "width": 2000,
     "height": 2000,
-    "scrollTop": 14,
+    "scrollTop": -38,
     "scrollLeft": 0,
+    "zoomLevel": 1,
     "show": {
       "tableComment": true,
       "columnComment": false,
@@ -21,6 +23,8 @@
     "language": "GraphQL",
     "tableCase": "pascalCase",
     "columnCase": "camelCase",
+    "highlightTheme": "VS2015",
+    "bracketType": "none",
     "setting": {
       "relationshipDataTypeSync": true,
       "columnOrder": [
@@ -102,7 +106,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 65,
+              "widthName": 70.45806884765625,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -114,10 +118,11 @@
           "active": false,
           "left": 115,
           "top": 161,
-          "zIndex": 179,
+          "zIndex": 8,
           "widthName": 60,
           "widthComment": 60
         },
+        "visible": true,
         "id": "80ca87a6-b9d1-aa48-cfec-30da5a98f004"
       },
       {
@@ -209,7 +214,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 62,
+              "widthName": 66.68806457519531,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -255,7 +260,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 70,
+              "widthName": 72.49903869628906,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -301,7 +306,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 121,
+              "widthName": 126.56608581542969,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -313,10 +318,11 @@
           "active": false,
           "left": 611,
           "top": 80,
-          "zIndex": 168,
-          "widthName": 61,
-          "widthComment": 170
+          "zIndex": 3,
+          "widthName": 63.94505310058594,
+          "widthComment": 120
         },
+        "visible": true,
         "id": "44f92bfa-ad99-3c71-fb39-f330edeb8d84"
       },
       {
@@ -385,7 +391,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 68,
+              "widthName": 71.0560302734375,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -408,7 +414,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 63,
+              "widthName": 65.38804626464844,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -420,10 +426,11 @@
           "active": false,
           "left": 117,
           "top": 523,
-          "zIndex": 153,
+          "zIndex": 1,
           "widthName": 60,
-          "widthComment": 170
+          "widthComment": 120
         },
+        "visible": true,
         "id": "a1eef84a-c3f4-c2c1-75f3-061507632038"
       },
       {
@@ -469,7 +476,7 @@
               "pk": false,
               "fk": true,
               "pfk": false,
-              "widthName": 78,
+              "widthName": 81.06607055664062,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -492,7 +499,7 @@
               "pk": false,
               "fk": true,
               "pfk": false,
-              "widthName": 69,
+              "widthName": 69.54803466796875,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -504,10 +511,11 @@
           "active": false,
           "left": 635,
           "top": 533,
-          "zIndex": 163,
-          "widthName": 69,
-          "widthComment": 150
+          "zIndex": 2,
+          "widthName": 75.12506103515625,
+          "widthComment": 120
         },
+        "visible": true,
         "id": "aa3b6be7-48af-e09d-272f-f19a8511b87a"
       },
       {
@@ -576,7 +584,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 65,
+              "widthName": 70.45806884765625,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -588,10 +596,11 @@
           "active": false,
           "left": 1039,
           "top": 109,
-          "zIndex": 178,
+          "zIndex": 4,
           "widthName": 60,
-          "widthComment": 151
+          "widthComment": 120
         },
+        "visible": true,
         "id": "ca13724a-1dd9-7c27-30c6-3eaec490139c"
       }
     ],
@@ -601,15 +610,15 @@
     "memos": [
       {
         "value": "Deployment and peer link?\n\nFigure out relationship between deployment-peer-config.\n\nIPs, where do they belong?\npeer table? Or it's own table referencing peers.\n\nEndpoint IP. Same table as IPs? bool if endpoint or peer ip?",
-        "id": "1e2d3cb9-7d5c-100d-654f-eb71ccb0d25e",
         "ui": {
-          "active": true,
+          "active": false,
           "left": 378,
           "top": 296,
-          "zIndex": 185,
+          "zIndex": 6,
           "width": 260,
           "height": 196
-        }
+        },
+        "id": "1e2d3cb9-7d5c-100d-654f-eb71ccb0d25e"
       }
     ]
   },
@@ -617,12 +626,14 @@
     "relationships": [
       {
         "identification": false,
+        "relationshipType": "OneN",
+        "startRelationshipType": "Dash",
         "start": {
           "tableId": "80ca87a6-b9d1-aa48-cfec-30da5a98f004",
           "columnIds": [
             "e8a1617f-7d1e-bf92-a92f-7d0da2f36b66"
           ],
-          "x": 282,
+          "x": 284.7290344238281,
           "y": 291.5,
           "direction": "bottom"
         },
@@ -631,21 +642,24 @@
           "columnIds": [
             "fb2fd9a8-005c-3584-bed7-586baf902f46"
           ],
-          "x": 285.5,
+          "x": 287.02801513671875,
           "y": 523,
           "direction": "top"
         },
-        "id": "b6a4b9ac-82e0-8a9d-91f7-88298cbaba13",
-        "relationshipType": "OneN"
+        "constraintName": "",
+        "visible": true,
+        "id": "b6a4b9ac-82e0-8a9d-91f7-88298cbaba13"
       },
       {
         "identification": false,
+        "relationshipType": "OneN",
+        "startRelationshipType": "Ring",
         "start": {
           "tableId": "80ca87a6-b9d1-aa48-cfec-30da5a98f004",
           "columnIds": [
             "e8a1617f-7d1e-bf92-a92f-7d0da2f36b66"
           ],
-          "x": 449,
+          "x": 454.45806884765625,
           "y": 226.25,
           "direction": "right"
         },
@@ -658,17 +672,20 @@
           "y": 196.5,
           "direction": "left"
         },
-        "id": "d06212e7-5159-d093-8e01-535cacdc824a",
-        "relationshipType": "OneN"
+        "constraintName": "",
+        "visible": true,
+        "id": "d06212e7-5159-d093-8e01-535cacdc824a"
       },
       {
         "identification": false,
+        "relationshipType": "OneN",
+        "startRelationshipType": "Dash",
         "start": {
           "tableId": "44f92bfa-ad99-3c71-fb39-f330edeb8d84",
           "columnIds": [
             "9d58f031-86d3-d650-090f-2143b6d7d722"
           ],
-          "x": 806,
+          "x": 808.7830429077148,
           "y": 313,
           "direction": "bottom"
         },
@@ -677,21 +694,24 @@
           "columnIds": [
             "cdc7d33b-4c87-c8f4-d632-699f0246c091"
           ],
-          "x": 808.5,
+          "x": 810.0330352783203,
           "y": 533,
           "direction": "top"
         },
-        "id": "306a5165-eebb-d124-b7b9-3c2eba640a6f",
-        "relationshipType": "OneN"
+        "constraintName": "",
+        "visible": true,
+        "id": "306a5165-eebb-d124-b7b9-3c2eba640a6f"
       },
       {
         "identification": false,
+        "relationshipType": "OneN",
+        "startRelationshipType": "Ring",
         "start": {
           "tableId": "a1eef84a-c3f4-c2c1-75f3-061507632038",
           "columnIds": [
             "f338a8d6-0906-f81c-de25-c051cc85165e"
           ],
-          "x": 454,
+          "x": 457.0560302734375,
           "y": 598.5,
           "direction": "right"
         },
@@ -704,8 +724,9 @@
           "y": 598.25,
           "direction": "left"
         },
-        "id": "1456f6cd-47d4-c98a-4eb7-4c4963dbceea",
-        "relationshipType": "OneN"
+        "constraintName": "",
+        "visible": true,
+        "id": "1456f6cd-47d4-c98a-4eb7-4c4963dbceea"
       }
     ]
   }
